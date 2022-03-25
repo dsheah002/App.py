@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Material Inventory {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron p-3">
+
+                <table class="table table-hover">
+                    <tr>
+                        <td>Glue</td>
+                        <td>
+                            <a href="/glue" class="btn btn-success btn-xs float-right" >Manage Inventory</a>
+                            <a href="/glue_type" class="btn btn-link btn-xs float-right" >Make Transaction</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Lead Frame</td>
+                        <td>
+                            <a href="" class="btn btn-success btn-xs float-right" >Manage Inventory</a>
+                            <a href="" class="btn btn-link btn-xs float-right" >Make Transaction</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Mold Compound</td>
+                        <td>
+                            <a href="" class="btn btn-success btn-xs float-right" >Manage Inventory</a>
+                            <a href="" class="btn btn-link btn-xs float-right" >Make Transaction</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Wafer</td>
+                        <td>
+                            <a href="" class="btn btn-success btn-xs float-right" >Manage Inventory</a>
+                            <a href="" class="btn btn-link btn-xs float-right" >Make Transaction</a>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
