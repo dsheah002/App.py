@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>{% block title %} {% endblock %} </title>
+
+</head>
+
+<body>
+
+    {% block body %} {% endblock %}
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!--    show original value in edit form for select type-->
+<script>
+    $(function () {
+            $("select").each(function () {
+                var selectedVal = $(this).prev("input[type='hidden']").val();
+                if (selectedVal != "") {
+                    $(this).val(selectedVal);
+                }
+            })
+    })
+</script>
+
+<!--    search table-->
+<script>
+var $rows = $('#myTable tbody tr');
+
+$('#mySearch').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
+
+<!--    sort table-->
+<script>
+$('th').click(function(){
+    var table = $(this).parents('table').eq(0)
+    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+    this.asc = !this.asc
+
+    if (!this.asc){
+        rows = rows.reverse()
+    }
+    for (var i = 0; i < rows.length; i++){
+        table.append(rows[i])
+    }
+})
+
+function comparer(index) {
+    return function(a, b) {
+        var valA = getCellValue(a, index), valB = getCellValue(b, index)
+        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+}
+
+function getCellValue(row, index){
+    return $(row).children('td').eq(index).text()
+}
+</script>
+
+<!--    auto update expiry status-->
+<script>
+    function MonthDifference(d1, d2) {
+            var months;
+            var days;
+            var status;
+            months = (d2.getFullYear() - d1.getFullYear()) * 12 - d1.getMonth() + d2.getMonth() + 1;
+
+            days = d1.getDate() - d2.getDate();
+
+            if(days > 0){
+                months = months - 1;
+            }
+
+            if(months < 1){
+                status = "Expired";
+            }else if(months == 1){
+                status = "Expiring in 1 Month";
+            }else if(months == 2){
+                status = "Expiring in 2 Months";
+            }else if(months == 3){
+                status = "Expiring in 3 Months";
+            }else{
+                status = "OK";
+            }
+
+            return status;
+    }
+
+    $("#myTable tbody tr td.expiry_status").each(function () {
+            var diff;
+            d1 = new Date();
+            d2 = new Date($(this).text());
+
+            $(this).html(MonthDifference(d1, d2));
+    })
+</script>
+
+<script>
+    $("#myTable tbody tr td.expiry_status").each(function () {
+        if ($(this).html() == "Expired" ) {
+            $(this).css('color', 'red');
+        }
+    });
+
+    $("#myTable tbody tr td.trans_type").each(function () {
+        if ($(this).html() == "withdrawal") {
+            $(this).parent().css('backgroundColor', 'ghostwhite');
+        }
+    });
+</script>
+
+<!--    Export to CSV-->
+<script>
+    function exportData(){
+    var table = document.getElementById("myTable");
+
+    var rows =[];
+
+    for(var i=0,row; row = table.rows[i];i++){
+        column1 = row.cells[0].innerText;
+        column2 = row.cells[1].innerText;
+        column3 = row.cells[2].innerText;
+        column4 = row.cells[3].innerText;
+        column5 = row.cells[4].innerText;
+        column6 = row.cells[5].innerText;
+        column7 = row.cells[6].innerText;
+        column8 = row.cells[7].innerText;
+        column9 = row.cells[8].innerText;
+        column10 = row.cells[9].innerText;
+        column11 = row.cells[10].innerText;
+        column12 = row.cells[11].innerText;
+        column13 = row.cells[12].innerText;
+
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9,
+                column10,
+                column11,
+                column12,
+                column13
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "export_csv.csv");
+        document.body.appendChild(link);
+        link.click();
+}
+</script>
+
+</body>
+</html>
