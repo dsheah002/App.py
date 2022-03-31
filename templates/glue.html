@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Glue Inventory {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-7">
+            <div class="jumbotron p-3">
+
+                <button class="btn btn-primary" onclick="exportData()">
+                    Export to CSV
+                </button>
+
+                <div class="form-group pull-right">
+                    <input type="text" class="form-control" id="mySearch" placeholder="Search">
+                </div>
+                </br>
+                </br>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+
+                {{message}}
+                </div>
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <table id="myTable" class="table table-hover table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Glue Type</th>
+                            <th>Supplier</th>
+                            <th>Storage Temperature (°C)</th>
+                            <th>Freezer No.</th>
+                            <th>Syringe Volume (cc)</th>
+                            <th>Weight (g)</th>
+                            <th>Lot No.</th>
+                            <th>Received Date</th>
+                            <th>Expiry Date</th>
+                            <th>Project Leader</th>
+                            <th>Latest Balance</th>
+                            <th>Material Release Status</th>
+                            <th>Expiry Status</th>
+                        </tr>
+                    </thead>
+
+
+
+                    {% for glue_types, glue_descriptions in glues %}
+                    {% if glue_descriptions.trans_type=="incoming" %}
+                    <tbody>
+                    <tr>
+                        <td>{{ glue_types.glue_name }}</td>
+                        <td>{{ glue_types.supplier }}</td>
+                        <td>{{ glue_types.storage_temp }}</td>
+                        <td>{{ glue_types.freezer_no }}</td>
+                        <td>{{ glue_types.syringe_volume }}</td>
+                        <td>{{ glue_types.weight }}</td>
+                        <td>{{ glue_descriptions.lot_no }}</td>
+                        <td>{{ glue_descriptions.received_date }}</td>
+                        <td>{{ glue_descriptions.expiry_date }}</td>
+                        <td>{{ glue_descriptions.project_leader }}</td>
+                        <td>{{ glue_descriptions.balance }}</td>
+                        <td>{{ glue_descriptions.release_status }}</td>
+                        <td class="expiry_status" id="expiry_status">{{ glue_descriptions.expiry_date }}</td>
+
+                        <td>
+                            <a href="/glue_description/update/{{glue_descriptions.glue_description_id}}" class="btn"
+                               data-toggle="modal" data-target="#modaledit{{glue_descriptions.glue_description_id}}">
+                                <i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    {% endif %}
+
+
+                  <!-- Modal Edit Material-->
+<div id="modaledit{{glue_descriptions.glue_description_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h4 class="modal-title">Update Glue Information</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="/glue_inventory/update/{{ glue_descriptions.glue_description_id }}" method="POST">
+
+                    <div class="form-group">
+                        <label>Balance:</label>
+                        <input type="number" class="form-control" name="balance" value="{{glue_descriptions.balance}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material Release Status:</label>
+                        <input type="hidden" value="{{glue_descriptions.release_status}}">
+                        <select class="form-control" name="release_status" required>
+                            <option value="">Select A Release Status</option>
+                            <option value="Reject">Reject</option>
+                            <option value="On Hold">On Hold</option>
+                            <option value="Release">Release</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+                    {% endfor %}
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Glue Type {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="jumbotron p-3">
+
+                    <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
+                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Glue Type</button>
+
+                    <div class="form-group pull-right" style="margin:5px;">
+                        <input type="text" class="form-control" id="mySearch" placeholder="Search">
+                    </div>
+
+                    <h4>Please select a glue type:</h4>
+
+                    </br>
+                    </br>
+
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+
+                {{message}}
+                </div>
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <table id="myTable" class="table table-hover table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Glue Type</th>
+                            <th>Supplier</th>
+                            <th>Storage Temperature (°C)</th>
+                            <th>Freezer No.</th>
+                            <th>Syringe Volume (cc)</th>
+                            <th>Weight (g)</th>
+                        </tr>
+                    </thead>
+
+
+
+                    {% for glue in glue_types %}
+                    <tr>
+                        <td>{{ glue.glue_name }}</td>
+                        <td>{{ glue.supplier }}</td>
+                        <td>{{ glue.storage_temp }}</td>
+                        <td>{{ glue.freezer_no }}</td>
+                        <td>{{ glue.syringe_volume}}</td>
+                        <td>{{ glue.weight}}</td>
+
+                        <td>
+                            <a href="/glue_type/update/{{glue.glue_type_id}}" class="btn" data-toggle="modal"
+                               data-target="#modaledit{{glue.glue_type_id}}"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <a href="/glue_type/delete/{{glue.glue_type_id}}" class="btn"
+                               onclick="return confirm('Are You Sure To Delete?')"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                        <td>
+                            <a href="/glue_type/{{ glue.glue_type_id }}" class="btn btn-success" >Select</a>
+                        </td>
+                    </tr>
+
+
+
+                  <!-- Modal Edit Material-->
+<div id="modaledit{{glue.glue_type_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h4 class="modal-title">Update Glue Type</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="{{url_for('update_glue_type')}}" method="POST">
+
+                    <div class="form-group">
+                        <label>Glue Type:</label>
+                        <input type="hidden"  name="glue_type_id" value="{{glue.glue_type_id}}">
+                        <input type="text" class="form-control" name="glue_name" value="{{glue.glue_name}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supplier:</label>
+                        <input type="text" class="form-control" name="supplier" value="{{glue.supplier}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Storage Temperature (°C):</label>
+                        <input type="text" class="form-control" name="storage_temp" value="{{glue.storage_temp}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Freezer No.:</label>
+                        <input type="number" class="form-control" name="freezer_no" value="{{glue.freezer_no}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Syringe Volume (cc):</label>
+                        <input type="number" class="form-control" name="syringe_volume" value="{{glue.syringe_volume}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight (g):</label>
+                        <input type="number" class="form-control" name="weight" value="{{glue.weight}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                    {% endfor %}
+
+
+                </table>
+
+
+            </div>
+
+
+
+                  <!-- Modal Add Material-->
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Add Glue Type</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="{{url_for('insert_glue_type')}}" method="POST">
+
+                    <div class="form-group">
+                        <label>Glue Type:</label>
+                        <input type="text" class="form-control" name="glue_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supplier:</label>
+                        <input type="text" class="form-control" name="supplier" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Storage Temperature (°C):</label>
+                        <input type="text" class="form-control" name="storage_temp" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Freezer No.:</label>
+                        <input type="number" class="form-control" name="freezer_no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Syringe Volume (cc):</label>
+                        <input type="number" class="form-control" name="syringe_volume" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight (g):</label>
+                        <input type="number" class="form-control" name="weight" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
