@@ -291,6 +291,6 @@ def delete_glue_type(glue_type_id):
 
 
 # Server configurations - REM CHANGE
-# app.run(debug=True, host='0.0.0.0', port=8080)
+# app.run(debug=True, host="api.ap-sg-1.icp.infineon.com", port=6443)
 if __name__ == "__main__":
-app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
+app.run(host="api.ap-sg-1.icp.infineon.com", port=6443, debug=True, threaded=True)
