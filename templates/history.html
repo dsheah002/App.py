@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Glue Inventory {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-7">
+            <div class="jumbotron p-3">
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+
+                {{message}}
+                </div>
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <table id="myTable" class="table table-hover table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Material</th>
+                            <th>Page(transaction/inventory)</th>
+                            <th>Old Content</th>
+                            <th>New Content</th>
+                            <th>Changed By</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+
+
+
+                    {% for h in histories %}
+                    <tbody>
+                    <tr>
+                        <td>{{ h.edit_type }}</td>
+                        <td>{{ h.edit_material }}</td>
+                        <td>{{ h.edit_page }}</td>
+                        <td>{{ h.old_content }}</td>
+                        <td>{{ h.new_content }}</td>
+                        <td>{{ h.changed_by }}</td>
+                        <td>{{ h.changed_time }}</td>
+                    </tr>
+                    </tbody>
+
+                    {% endfor %}
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
