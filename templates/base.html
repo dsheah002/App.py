@@ -111,6 +111,7 @@ function getCellValue(row, index){
     })
 </script>
 
+<!--    add font color for withdraw transactions-->
 <script>
     $("#myTable tbody tr td.expiry_status").each(function () {
         if ($(this).html() == "Expired" ) {
@@ -120,7 +121,7 @@ function getCellValue(row, index){
 
     $("#myTable tbody tr td.trans_type").each(function () {
         if ($(this).html() == "withdrawal") {
-            $(this).parent().css('backgroundColor', 'ghostwhite');
+            $(this).parent().css('color', 'gray');
         }
     });
 </script>
