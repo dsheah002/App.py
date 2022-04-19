@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Mold Compound Description {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-7">
+            <div class="jumbotron p-3">
+
+                <a href="/mold_type" class="navbar-brand">
+                    <h3>{{ mold_type.mold_name }} {{mold_type.weight}}kg)</h3>
+                </a>
+
+                <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
+                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Mold Compound</button>
+
+                <div class="form-group pull-right" style="margin:5px;">
+                    <input type="text" class="form-control" id="mySearch" placeholder="Search">
+                </div>
+
+                </br>
+                </br>
+
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+
+                {% if category=="error" %}
+                    <div class="alert alert-danger alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+
+                        {{ message }}
+                    </div>
+                {% endif %}
+
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+
+                <table id="myTable" class="table table-hover table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Lot No.</th>
+                            <th>Received Date</th>
+                            <th>Expiry Date</th>
+                            <th>Project Leader</th>
+                            <th>Incoming Qty (syringe)</th>
+                            <th>Withdraw Date</th>
+                            <th>Withdraw Qty (syringe)</th>
+                            <th>Withdraw By</th>
+                            <th>Withdraw Purpose</th>
+                            <th>Latest Balance</th>
+                            <th>Transaction Type</th>
+                            <th>Expiry Status</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+
+
+                    {% for mold in mold_descriptions %}
+                    <tr>
+                        <td>{{ mold.lot_no }}</td>
+                        <td>{{ mold.received_date }}</td>
+                        <td>{{ mold.expiry_date }}</td>
+                        <td>{{ mold.project_leader }}</td>
+                        <td>{{ mold.incoming_qty }}</td>
+                        <td>{{ mold.withdraw_date }}</td>
+                        <td>{{ mold.withdraw_qty }}</td>
+                        <td>{{ mold.withdraw_by }}</td>
+                        <td>{{ mold.withdraw_purpose }}</td>
+                        <td>{{ mold.balance }}</td>
+                        <td class="trans_type" id="trans_type">{{ mold.trans_type }}</td>
+                        <td class="expiry_status" id="expiry_status">{{ mold.expiry_date }}</td>
+
+
+                        {% if mold.trans_type=="incoming" %}
+                        <td>
+                            <a href="/mold_description/update/{{mold.mold_description_id}}" class="btn" data-toggle="modal"
+                               data-target="#modaledit{{mold.mold_description_id}}"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        {% endif %}
+
+                        <td>
+                            <a href="/mold_description/delete/{{mold.mold_description_id}}" class="btn"
+                               onclick="return confirm('Are You Sure To Delete?')"><i class="fa fa-trash-o"></i></a>
+                        </td>
+
+                        {% if mold.trans_type == "incoming" %}
+                        <td class="withdraw" id="withdraw">
+                            <a href="/mold_description/withdraw/{{mold.mold_description_id}}" class="btn btn-danger"
+                               data-toggle="modal" data-target="#modalwithdraw{{mold.mold_description_id}}"><i class="fa fa-sign-in"></i>
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+
+
+
+                  <!-- Modal Edit Material-->
+<div id="modaledit{{mold.mold_description_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h4 class="modal-title">Update Mold Compound Description</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="mold_description/update/{{ mold.mold_description_id }}" method="POST">
+
+                    {% if mold.incoming_qty == mold.balance %}
+
+                    <div class="form-group">
+                        <label>Lot No.:</label>
+                        <input type="text" class="form-control" name="lot_no" value="{{mold.lot_no}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Received Date:</label>
+                        <input type="date" class="form-control" name="received_date" value="{{mold.received_date}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expiry Date:</label>
+                        <input type="date" class="form-control" name="expiry_date" value="{{mold.expiry_date}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Leader:</label>
+                        <input type="text" class="form-control" name="project_leader" value="{{mold.project_leader}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Incoming Qty (syringe):</label>
+                        <input type="number" class="form-control" name="incoming_qty" value="{{mold.incoming_qty}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+
+                    {% endif %}
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+
+                    <!--Modal Withdraw Material-->
+
+<div id="modalwithdraw{{mold.mold_description_id}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <div class="modal-header">
+            <h4 class="modal-title">Withdraw mold</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="/mold_description/withdraw/{{ mold.mold_description_id }}" method="POST">
+
+                    <div class="form-group">
+                        <label>Withdraw Date:</label>
+                        <input type="date" class="form-control" name="withdraw_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Withdraw Qty (syringe):</label>
+                        <input type="number" class="form-control" name="withdraw_qty" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Withdraw By:</label>
+                        <input type="text" class="form-control" name="withdraw_by" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Withdraw Purpose:</label>
+                        <input type="text" class="form-control" name="withdraw_purpose" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Withdraw</button>
+                    </div>
+
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+</div>
+
+
+                    {% endfor %}
+
+
+                </table>
+
+
+            </div>
+
+
+
+                  <!-- Modal Add Material-->
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Add Mold Compound Description</h4>
+         </div>
+
+         <div class="modal-body">
+            <form action="/mold_description/insert/{{ mold_type.mold_type_id }}" method="POST">
+
+                    <div class="form-group">
+                        <label>Lot No.:</label>
+                        <input type="text" class="form-control" name="lot_no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Received Date:</label>
+                        <input type="date" class="form-control" name="received_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expiry Date:</label>
+                        <input type="date" class="form-control" name="expiry_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Leader:</label>
+                        <input type="text" class="form-control" name="project_leader" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Incoming Qty (1 syringe/unit):</label>
+                        <input type="number" class="form-control" name="incoming_qty" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+
+            </form>
+
+
+         </div>
+
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+
+
+      </div>
+
+
+   </div>
+
+
+</div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
