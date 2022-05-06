@@ -1,0 +1,6 @@
+Flask
+ColumnAlchemy
+Babel
+Flask-SQLAlchemy
+pip
+pymysql
