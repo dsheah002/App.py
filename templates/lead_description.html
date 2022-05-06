@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 
-{% block title %} Glue Description {% endblock %}
+{% block title %} Lead Frame Description {% endblock %}
 
 {% block body %}
 
@@ -10,12 +10,12 @@
         <div class="col-xs-7">
             <div class="jumbotron p-3">
 
-                <a href="/glue_type" class="navbar-brand">
-                    <h3>{{ glue_type.glue_name }} ({{glue_type.syringe_volume}}cc/{{glue_type.weight}}g)</h3>
+                <a href="/lead_type" class="navbar-brand">
+                    <h3>{{ lead_type.lead_no }} {{lead_type.title}}</h3>
                 </a>
 
                 <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
-                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Glue</button>
+                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Lead Frame</button>
 
                 <div class="form-group pull-right" style="margin:5px;">
                     <input type="text" class="form-control" id="mySearch" placeholder="Search">
@@ -56,12 +56,17 @@
                     <thead>
                         <tr>
                             <th>Lot No.</th>
+                            <th>Row Location</th>
                             <th>Received Date</th>
                             <th>Expiry Date</th>
+                            <th>Manufacturing Date</th>
                             <th>Project Leader</th>
-                            <th>Incoming Qty (syringe)</th>
+                            <th>Record Reff</th>
+                            <th>Invoice No.</th>
+                            <th>Purchasing Order</th>
+                            <th>Incoming Qty</th>
                             <th>Withdraw Date</th>
-                            <th>Withdraw Qty (syringe)</th>
+                            <th>Withdraw Qty</th>
                             <th>Withdraw By</th>
                             <th>Withdraw Purpose</th>
                             <th>Latest Balance</th>
@@ -75,38 +80,43 @@
 
 
 
-                    {% for glue in glue_descriptions %}
+                    {% for lead in lead_descriptions %}
                     <tr>
-                        <td>{{ glue.lot_no }}</td>
-                        <td>{{ glue.received_date }}</td>
-                        <td>{{ glue.expiry_date }}</td>
-                        <td>{{ glue.project_leader }}</td>
-                        <td>{{ glue.incoming_qty }}</td>
-                        <td>{{ glue.withdraw_date }}</td>
-                        <td>{{ glue.withdraw_qty }}</td>
-                        <td>{{ glue.withdraw_by }}</td>
-                        <td>{{ glue.withdraw_purpose }}</td>
-                        <td>{{ glue.balance }}</td>
-                        <td class="trans_type" id="trans_type">{{ glue.trans_type }}</td>
-                        <td class="expiry_status" id="expiry_status">{{ glue.expiry_date }}</td>
+                        <td>{{ lead.lot_no }}</td>
+                        <td>{{ lead.row_location }}</td>
+                        <td>{{ lead.received_date }}</td>
+                        <td>{{ lead.expiry_date }}</td>
+                        <td>{{ lead.manufacturing_date }}</td>
+                        <td>{{ lead.project_leader }}</td>
+                        <td>{{ lead.record_reff }}</td>
+                        <td>{{ lead.invoice_no }}</td>
+                        <td>{{ lead.purchasing_order }}</td>
+                        <td>{{ lead.incoming_qty }}</td>
+                        <td>{{ lead.withdraw_date }}</td>
+                        <td>{{ lead.withdraw_qty }}</td>
+                        <td>{{ lead.withdraw_by }}</td>
+                        <td>{{ lead.withdraw_purpose }}</td>
+                        <td>{{ lead.balance }}</td>
+                        <td class="trans_type" id="trans_type">{{ lead.trans_type }}</td>
+                        <td class="expiry_status" id="expiry_status">{{ lead.expiry_date }}</td>
 
 
-                        {% if glue.trans_type=="incoming" %}
+                        {% if lead.trans_type=="incoming" %}
                         <td>
-                            <a href="/glue_description/update/{{glue.glue_description_id}}" class="btn" data-toggle="modal"
-                               data-target="#modaledit{{glue.glue_description_id}}"><i class="fa fa-pencil"></i></a>
+                            <a href="/lead_description/update/{{lead.lead_description_id}}" class="btn" data-toggle="modal"
+                               data-target="#modaledit{{lead.lead_description_id}}"><i class="fa fa-pencil"></i></a>
                         </td>
                         {% endif %}
 
                         <td>
-                            <a href="/glue_description/delete/{{glue.glue_description_id}}" class="btn"
+                            <a href="/lead_description/delete/{{lead.lead_description_id}}" class="btn"
                                onclick="return confirm('Are You Sure To Delete?')"><i class="fa fa-trash-o"></i></a>
                         </td>
 
-                        {% if glue.trans_type == "incoming" %}
+                        {% if lead.trans_type == "incoming" %}
                         <td class="withdraw" id="withdraw">
-                            <a href="/glue_description/withdraw/{{glue.glue_description_id}}" class="btn btn-danger"
-                               data-toggle="modal" data-target="#modalwithdraw{{glue.glue_description_id}}"><i class="fa fa-sign-in"></i>
+                            <a href="/lead_description/withdraw/{{lead.lead_description_id}}" class="btn btn-danger"
+                               data-toggle="modal" data-target="#modalwithdraw{{lead.lead_description_id}}"><i class="fa fa-sign-in"></i>
                             </a>
                         </td>
                         {% endif %}
@@ -115,42 +125,68 @@
 
 
                   <!-- Modal Edit Material-->
-<div id="modaledit{{glue.glue_description_id}}" class="modal fade" role="dialog">
+<div id="modaledit{{lead.lead_description_id}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Update Glue Description</h4>
+            <h4 class="modal-title">Update Lead Frame Description</h4>
          </div>
 
          <div class="modal-body">
-            <form action="/glue_description/update/{{ glue.glue_description_id }}" method="POST">
+            <form action="/lead_description/update/{{ lead.lead_description_id }}" method="POST">
 
-                    {% if glue.incoming_qty == glue.balance %}
+                    {% if lead.incoming_qty == lead.balance %}
 
                     <div class="form-group">
                         <label>Lot No.:</label>
-                        <input type="text" class="form-control" name="lot_no" value="{{glue.lot_no}}" required>
+                        <input type="text" class="form-control" name="lot_no" value="{{lead.lot_no}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Row Location:</label>
+                        <input type="text" class="form-control" name="lot_no" value="{{lead.row_location}}" required>
                     </div>
 
                     <div class="form-group">
                         <label>Received Date:</label>
-                        <input type="date" class="form-control" name="received_date" value="{{glue.received_date}}" required>
+                        <input type="date" class="form-control" name="received_date" value="{{lead.received_date}}" required>
                     </div>
 
                     <div class="form-group">
                         <label>Expiry Date:</label>
-                        <input type="date" class="form-control" name="expiry_date" value="{{glue.expiry_date}}" required>
+                        <input type="date" class="form-control" name="expiry_date" value="{{lead.expiry_date}}" required>
                     </div>
+
+                    <div class="form-group">
+                        <label>Manufacturing Date:</label>
+                        <input type="date" class="form-control" name="manufacturing_date" value="{{lead.manufacturing_date}}" required>
+                    </div>
+
 
                     <div class="form-group">
                         <label>Project Leader:</label>
-                        <input type="text" class="form-control" name="project_leader" value="{{glue.project_leader}}" required>
+                        <input type="text" class="form-control" name="project_leader" value="{{lead.project_leader}}" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Incoming Qty (syringe):</label>
-                        <input type="number" class="form-control" name="incoming_qty" value="{{glue.incoming_qty}}" required>
+                        <label>Record Reff:</label>
+                        <input type="text" class="form-control" name="record_reff" value="{{lead.record_reff}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Invoice No.:</label>
+                        <input type="text" class="form-control" name="invoice_no" value="{{lead.invoice_no}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purchasing Order:</label>
+                        <input type="text" class="form-control" name="project_leader" value="{{lead.purchasing_order}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Incoming Qty:</label>
+                        <input type="number" class="form-control" name="incoming_qty" value="{{lead.incoming_qty}}" required>
                     </div>
 
                     <div class="form-group">
@@ -186,16 +222,16 @@
 
                     <!--Modal Withdraw Material-->
 
-<div id="modalwithdraw{{glue.glue_description_id}}" class="modal fade" role="dialog">
+<div id="modalwithdraw{{lead.lead_description_id}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Withdraw Glue</h4>
+            <h4 class="modal-title">Withdraw lead frame</h4>
          </div>
 
          <div class="modal-body">
-            <form action="/glue_description/withdraw/{{ glue.glue_description_id }}" method="POST">
+            <form action="/lead_description/withdraw/{{ lead.lead_description_id }}" method="POST">
 
                     <div class="form-group">
                         <label>Withdraw Date:</label>
@@ -203,7 +239,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Withdraw Qty (syringe):</label>
+                        <label>Withdraw Qty:</label>
                         <input type="number" class="form-control" name="withdraw_qty" required>
                     </div>
 
@@ -260,15 +296,20 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Add Glue Description</h4>
+            <h4 class="modal-title">Add Lead Frame Description</h4>
          </div>
 
          <div class="modal-body">
-            <form action="/glue_description/insert/{{ glue_type.glue_type_id }}" method="POST">
+            <form action="/lead_description/insert/{{ lead_type.lead_type_id }}" method="POST">
 
                     <div class="form-group">
                         <label>Lot No.:</label>
                         <input type="text" class="form-control" name="lot_no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Row Location:</label>
+                        <input type="text" class="form-control" name="row_location" required>
                     </div>
 
                     <div class="form-group">
@@ -282,12 +323,32 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Manufacturing Date:</label>
+                        <input type="date" class="form-control" name="manufacturing_date" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Project Leader:</label>
                         <input type="text" class="form-control" name="project_leader" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Incoming Qty (1 syringe/unit):</label>
+                        <label>Record Reff:</label>
+                        <input type="text" class="form-control" name="record_reff" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Invoice No.:</label>
+                        <input type="text" class="form-control" name="invoice_no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purchasing Order</label>
+                        <input type="text" class="form-control" name="purchasing_order" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Incoming Qty:</label>
                         <input type="number" class="form-control" name="incoming_qty" required>
                     </div>
 

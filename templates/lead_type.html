@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% include 'header.html' %}
 
-{% block title %} Glue Type {% endblock %}
+{% block title %} Lead Frame No. {% endblock %}
 
 {% block body %}
 
@@ -11,13 +11,13 @@
             <div class="jumbotron p-3">
 
                     <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
-                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Glue Type</button>
+                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Lead Frame No.</button>
 
                     <div class="form-group pull-right" style="margin:5px;">
                         <input type="text" class="form-control" id="mySearch" placeholder="Search">
                     </div>
 
-                    <h3>Please select (or add) a glue type:</h3>
+                    <h3>Please select (or add) a lead frame no.:</h3>
 
                     </br>
                     </br>
@@ -42,17 +42,13 @@
                 <table id="myTable" class="table table-hover table-sm text-center">
                     <thead>
                         <tr>
-                            <th>Glue Type</th>
+                            <th>Lead Frame No.</th>
                             <th></th>
                             <th>Supplier</th>
                             <th></th>
-                            <th>Storage Temperature (°C)</th>
+                            <th>Package No.</th>
                             <th></th>
-                            <th>Freezer No.</th>
-                            <th></th>
-                            <th>Syringe Volume (cc)</th>
-                            <th></th>
-                            <th>Weight (g)</th>
+                            <th>Title</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -64,79 +60,66 @@
 
 
 
-                    {% for glue in glue_types %}
+                    {% for lead in lead_types %}
                     <tr>
-                        <td>{{ glue.glue_name }}</td>
+                        <td>{{ lead.lead_no }}</td>
                         <td></td>
-                        <td>{{ glue.supplier }}</td>
+                        <td>{{ lead.supplier }}</td>
                         <td></td>
-                        <td>{{ glue.storage_temp }}</td>
+                        <td>{{ lead.package_no }}</td>
                         <td></td>
-                        <td>{{ glue.freezer_no }}</td>
-                        <td></td>
-                        <td>{{ glue.syringe_volume}}</td>
-                        <td></td>
-                        <td>{{ glue.weight}}</td>
+                        <td>{{ lead.title }}</td>
                         <td></td>
 
                         <td>
-                            <a href="/glue_type/update/{{glue.glue_type_id}}" class="btn" data-toggle="modal"
-                               data-target="#modaledit{{glue.glue_type_id}}"><i class="fa fa-pencil"></i></a>
+                            <a href="/lead_type/update/{{lead.lead_type_id}}" class="btn" data-toggle="modal"
+                               data-target="#modaledit{{lead.lead_type_id}}"><i class="fa fa-pencil"></i></a>
                         </td>
                         <td></td>
                         <td>
-                            <a href="/glue_type/delete/{{glue.glue_type_id}}" class="btn"
+                            <a href="/lead_type/delete/{{lead.lead_type_id}}" class="btn"
                                onclick="return confirm('Are You Sure To Delete?')"><i class="fa fa-trash-o"></i></a>
                         </td>
                         <td></td>
                         <td>
-                            <a href="/glue_type/{{ glue.glue_type_id }}" class="btn btn-success" >Select</a>
+                            <a href="/lead_type/{{ lead.lead_type_id }}" class="btn btn-success" >Select</a>
                         </td>
                     </tr>
 
 
 
                   <!-- Modal Edit Material-->
-<div id="modaledit{{glue.glue_type_id}}" class="modal fade" role="dialog">
+<div id="modaledit{{lead.lead_type_id}}" class="modal fade" role="dialog">
    <div class="modal-dialog">
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Update Glue Type</h4>
+            <h4 class="modal-title">Update Lead Frame No.</h4>
          </div>
 
          <div class="modal-body">
-            <form action="{{url_for('update_glue_type')}}" method="POST">
+            <form action="{{url_for('update_lead_type')}}" method="POST">
 
                     <div class="form-group">
-                        <label>Glue Type:</label>
-                        <input type="hidden"  name="glue_type_id" value="{{glue.glue_type_id}}">
-                        <input type="text" class="form-control" name="glue_name" value="{{glue.glue_name}}" required>
+                        <label>Lead Frame No.:</label>
+                        <input type="hidden"  name="lead_type_id" value="{{lead.lead_type_id}}">
+                        <input type="text" class="form-control" name="lead_no" value="{{lead.lead_no}}" required>
                     </div>
+
 
                     <div class="form-group">
                         <label>Supplier:</label>
-                        <input type="text" class="form-control" name="supplier" value="{{glue.supplier}}" required>
+                        <input type="text" class="form-control" name="supplier" value="{{lead.supplier}}" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Storage Temperature (°C):</label>
-                        <input type="text" class="form-control" name="storage_temp" value="{{glue.storage_temp}}" required>
+                        <label>Package No.:</label>
+                        <input type="text" class="form-control" name="package_no" value="{{lead.package_no}}" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Freezer No.:</label>
-                        <input type="number" class="form-control" name="freezer_no" value="{{glue.freezer_no}}" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Syringe Volume (cc):</label>
-                        <input type="number" class="form-control" name="syringe_volume" value="{{glue.syringe_volume}}" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Weight (g):</label>
-                        <input type="number" class="form-control" name="weight" value="{{glue.weight}}" required>
+                        <label>Title:</label>
+                        <input type="text" class="form-control" name="title" value="{{lead.title}}" required>
                     </div>
 
                     <div class="form-group">
@@ -182,15 +165,15 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Add Glue Type</h4>
+            <h4 class="modal-title">Add Lead Frame No.</h4>
          </div>
 
          <div class="modal-body">
-            <form action="{{url_for('insert_glue_type')}}" method="POST">
+            <form action="{{url_for('insert_lead_type')}}" method="POST">
 
                     <div class="form-group">
-                        <label>Glue Type:</label>
-                        <input type="text" class="form-control" name="glue_name" required>
+                        <label>Lead Frame No:</label>
+                        <input type="text" class="form-control" name="lead_no" required>
                     </div>
 
                     <div class="form-group">
@@ -199,23 +182,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Storage Temperature (°C):</label>
-                        <input type="text" class="form-control" name="storage_temp" required>
+                        <label>Package No.:</label>
+                        <input type="text" class="form-control" name="package_no" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Freezer No.:</label>
-                        <input type="number" class="form-control" name="freezer_no" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Syringe Volume (cc):</label>
-                        <input type="number" class="form-control" name="syringe_volume" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Weight (g):</label>
-                        <input type="number" class="form-control" name="weight" required>
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="title" required>
                     </div>
 
                     <div class="form-group">

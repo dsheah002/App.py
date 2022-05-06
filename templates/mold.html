@@ -41,7 +41,7 @@
                         <tr>
                             <th>Material Description</th>
                             <th>Supplier</th>
-                            <th>Pallet Size (mm*g)</th>
+                            <th>Pellet Size (mm*g)</th>
                             <th>Part No.</th>
                             <th>Weight (kg)</th>
                             <th>Lot No.</th>
@@ -49,7 +49,7 @@
                             <th>Expiry Date</th>
                             <th>Manufacturing Date</th>
                             <th>Project Leader</th>
-                            <th>Latest Balance</th>
+                            <th>Latest Balance (kg)</th>
                             <th>Material Release Status</th>
                             <th>Expiry Status</th>
                         </tr>
@@ -57,19 +57,19 @@
 
 
 
-                    {% for mold_types, mold_descriptions in mold %}
+                    {% for mold_types, mold_descriptions in molds %}
                     {% if mold_descriptions.trans_type=="incoming" %}
                     <tbody>
                     <tr>
-                        <td>{{ mold_types.material_description }}</td>
+                        <td>{{ mold_types.mold_name }}</td>
                         <td>{{ mold_types.supplier }}</td>
-                        <td>{{ mold_types.pallet_size }}</td>
+                        <td>{{ mold_types.pellet_size }}</td>
                         <td>{{ mold_types.part_no }}</td>
                         <td>{{ mold_types.weight }}</td>
                         <td>{{ mold_descriptions.lot_no }}</td>
                         <td>{{ mold_descriptions.received_date }}</td>
                         <td>{{ mold_descriptions.expiry_date }}</td>
-                        <td>{{ mold_types.manufacturing_date }}</td>
+                        <td>{{ mold_descriptions.manufacturing_date }}</td>
                         <td>{{ mold_descriptions.project_leader }}</td>
                         <td>{{ mold_descriptions.balance }}</td>
                         <td>{{ mold_descriptions.release_status }}</td>

@@ -11,7 +11,7 @@
             <div class="jumbotron p-3">
 
                     <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
-                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Mold Type</button>
+                        data-target="#mymodal"><i class="fa fa-plus"></i> Add Mold Compound Type</button>
 
                     <div class="form-group pull-right" style="margin:5px;">
                         <input type="text" class="form-control" id="mySearch" placeholder="Search">
@@ -46,13 +46,9 @@
                             <th></th>
                             <th>Supplier</th>
                             <th></th>
-                            <th>Pallet Size (mm*g)</th>
+                            <th>Pellet Size (mm*g)</th>
                             <th></th>
                             <th>Part No.</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -70,11 +66,9 @@
                         <td></td>
                         <td>{{ mold.supplier }}</td>
                         <td></td>
-                        <td>{{ mold.pallet_size }}</td>
+                        <td>{{ mold.pellet_size }}</td>
                         <td></td>
                         <td>{{ mold.part_no }}</td>
-                        <td></td>
-                        <td></td>
                         <td></td>
 
                         <td>
@@ -100,17 +94,18 @@
       <div class="modal-content">
 
          <div class="modal-header">
-            <h4 class="modal-title">Update Mold Type</h4>
+            <h4 class="modal-title">Update Mold Compound Type</h4>
          </div>
 
          <div class="modal-body">
             <form action="{{url_for('update_mold_type')}}" method="POST">
 
                     <div class="form-group">
-                        <label>Mold Type:</label>
+                        <label>Mold Compound Type:</label>
                         <input type="hidden"  name="mold_type_id" value="{{mold.mold_type_id}}">
                         <input type="text" class="form-control" name="mold_name" value="{{mold.mold_name}}" required>
                     </div>
+
 
                     <div class="form-group">
                         <label>Supplier:</label>
@@ -118,8 +113,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Pallet Size (mm*g):</label>
-                        <input type="text" class="form-control" name="pallet_size" value="{{mold.pallet_size}}" required>
+                        <label>Pellet Size (mm*g):</label>
+                        <input type="text" class="form-control" name="pellet_size" value="{{mold.pellet_size}}" required>
                     </div>
 
                     <div class="form-group">
@@ -170,14 +165,14 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Add Mold Type</h4>
+            <h4 class="modal-title">Add Mold Compound Type</h4>
          </div>
 
          <div class="modal-body">
             <form action="{{url_for('insert_mold_type')}}" method="POST">
 
                     <div class="form-group">
-                        <label>Mold Type:</label>
+                        <label>Mold Compound Type:</label>
                         <input type="text" class="form-control" name="mold_name" required>
                     </div>
 
@@ -187,8 +182,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>pallet Size (mm*g):</label>
-                        <input type="text" class="form-control" name="pallet_size" required>
+                        <label>pellet Size (mm*g):</label>
+                        <input type="text" class="form-control" name="pellet_size" required>
                     </div>
 
                     <div class="form-group">

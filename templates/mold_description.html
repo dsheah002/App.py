@@ -11,7 +11,7 @@
             <div class="jumbotron p-3">
 
                 <a href="/mold_type" class="navbar-brand">
-                    <h3>{{ mold_type.mold_name }} {{mold_type.weight}}kg)</h3>
+                    <h3>{{ mold_type.mold_name }} {{mold_type.pellet_size}}(mm*g)</h3>
                 </a>
 
                 <button type="button" style="margin:5px;" class="btn btn-success float-right" data-toggle="modal"
@@ -58,13 +58,14 @@
                             <th>Lot No.</th>
                             <th>Received Date</th>
                             <th>Expiry Date</th>
+                            <th>Manufacturing Date</th>
                             <th>Project Leader</th>
                             <th>Incoming Qty (kg)</th>
                             <th>Withdraw Date</th>
                             <th>Withdraw Qty (kg)</th>
                             <th>Withdraw By</th>
                             <th>Withdraw Purpose</th>
-                            <th>Latest Balance</th>
+                            <th>Latest Balance (kg)</th>
                             <th>Transaction Type</th>
                             <th>Expiry Status</th>
                             <th></th>
@@ -80,6 +81,7 @@
                         <td>{{ mold.lot_no }}</td>
                         <td>{{ mold.received_date }}</td>
                         <td>{{ mold.expiry_date }}</td>
+                        <td>{{ mold.manufacturing_date }}</td>
                         <td>{{ mold.project_leader }}</td>
                         <td>{{ mold.incoming_qty }}</td>
                         <td>{{ mold.withdraw_date }}</td>
@@ -124,7 +126,7 @@
          </div>
 
          <div class="modal-body">
-            <form action="mold_description/update/{{ mold.mold_description_id }}" method="POST">
+            <form action="/mold_description/update/{{ mold.mold_description_id }}" method="POST">
 
                     {% if mold.incoming_qty == mold.balance %}
 
@@ -144,13 +146,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Manufacturing Date:</label>
+                        <input type="date" class="form-control" name="manufacturing_date" value="{{mold.manufacturing_date}}" required>
+                    </div>
+
+
+                    <div class="form-group">
                         <label>Project Leader:</label>
                         <input type="text" class="form-control" name="project_leader" value="{{mold.project_leader}}" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Incoming Qty (syringe):</label>
-                        <input type="number" class="form-control" name="incoming_qty" value="{{mold.incoming_qty}}" required>
+                        <label>Incoming Qty (kg):</label>
+                        <input type="number" step="0.01" class="form-control" name="incoming_qty" value="{{mold.incoming_qty}}" required>
                     </div>
 
                     <div class="form-group">
@@ -204,7 +212,7 @@
 
                     <div class="form-group">
                         <label>Withdraw Qty (kg):</label>
-                        <input type="number" class="form-control" name="withdraw_qty" required>
+                        <input type="number" step="0.01" class="form-control" name="withdraw_qty" required>
                     </div>
 
                     <div class="form-group">
@@ -282,13 +290,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Manufacturing Date:</label>
+                        <input type="date" class="form-control" name="manufacturing_date" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Project Leader:</label>
                         <input type="text" class="form-control" name="project_leader" required>
                     </div>
 
                     <div class="form-group">
                         <label>Incoming Qty (kg) :</label>
-                        <input type="number" class="form-control" name="incoming_qty" required>
+                        <input type="number" step="0.01" class="form-control" name="incoming_qty" required>
                     </div>
 
                     <div class="form-group">
